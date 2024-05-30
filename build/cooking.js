@@ -135,13 +135,13 @@ function update(delta){
     }
     for(var i = activeSmoke.length-1; i >= 0; i--){
         var smoke = activeSmoke[i];
-        smoke.mesh.material.opacity -= delta/smokeLifetime;
-        if(smoke.mesh.material.opacity <= 0){
+        smoke.lifetime -= delta;
+        if(smoke.lifetime <= 0){
             activeSmoke.splice(i,1);
             getScene().remove(smoke);
             continue;
         }
-        smoke.mesh.scale.setScalar(smoke.mesh.material.opacity*smokeSize);
+        smoke.mesh.scale.setScalar(smoke.lifetime/smokeLifetime*smokeSize);
         
         smoke.mesh.position.x += smoke.velocity.x*delta;
         smoke.mesh.position.y += smoke.velocity.y*delta;
@@ -151,15 +151,15 @@ function update(delta){
     }
 }
 class Smoke{
-    constructor(mesh, velocity){
+    constructor(mesh, velocity, lifetime){
         this.mesh = mesh;
         this.velocity = velocity;
+        this.lifetime = lifetime;
     }
 }
 function createSmoke(pos){
     var material = new THREE.MeshBasicMaterial();
     material.color = smokeColor;
-    material.transparent = true;
 
     var geometry = new THREE.TetrahedronGeometry(smokeSize,0);
 
@@ -177,7 +177,7 @@ function createSmoke(pos){
     velocity.applyAxisAngle(worldRight, spread);
     velocity.applyAxisAngle(worldUp, direction);
 
-    activeSmoke.push(new Smoke(mesh, velocity));
+    activeSmoke.push(new Smoke(mesh, velocity, smokeLifetime));
     getScene().add(mesh);
 }
 
