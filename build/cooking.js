@@ -138,7 +138,7 @@ function update(delta){
         smoke.lifetime -= delta;
         if(smoke.lifetime <= 0){
             activeSmoke.splice(i,1);
-            getScene().remove(smoke);
+            getScene().remove(smoke.mesh);
             continue;
         }
         smoke.mesh.scale.setScalar(smoke.lifetime/smokeLifetime*smokeSize);
