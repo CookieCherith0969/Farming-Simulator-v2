@@ -21,38 +21,30 @@ var tradeText = getDoc().getElementById("villagertext");
 
 var activeTrader = new THREE.Object3D();
 
+var villagerModel = new THREE.Object3D();
+var modelReady = false;
+
 const loader = new GLTFLoader();
 function createVillager() {
-    loader.load(
-        // resource URL
-        'build/models/Villager.gltf',
-        //called when the resource is loaded
-        function ( gltf ) {
-            console.log(gltf.scene);
-            gltf.scene.position.z += 17;
-            gltf.scene.position.y += 0.5;
-            gltf.scene.position.x += 23;
+    var newVillager = villagerModel.clone(true);
 
-            var i = Math.floor(Math.random()*4);
-            while(!availableSpots[i]){
-                i = Math.floor(Math.random()*4);
-            }
+    var i = Math.floor(Math.random()*4);
+    while(!availableSpots[i]){
+        i = Math.floor(Math.random()*4);
+    }
 
-            availableSpots[i] = false;
-            gltf.scene.position.x += i;
+    availableSpots[i] = false;
+    newVillager.position.x += i;
 
-            gltf.scene.traverse(function(object){
-                object.name = "Villager";
-                object.userData.parent = gltf.scene;     
-            });
+    newVillager.traverse(function(object){
+        object.userData.parent = newVillager;     
+    });
 
-            //gltf.scene.scale.multiplyScalar(4);
-            addCollider( gltf.scene );
+    //gltf.scene.scale.multiplyScalar(4);
+    addCollider( newVillager );
 
-            establishTrade(gltf.scene);
-            villagers.push(gltf.scene);
-        }
-    );
+    establishTrade(newVillager);
+    
 }
 
 
@@ -98,6 +90,23 @@ function setup(){
     // for(var i = 0; i < 4; i++){
     //     createVillager();
     // }
+    loader.load(
+        // resource URL
+        'build/models/Villager.gltf',
+        //called when the resource is loaded
+        function ( gltf ) {
+            gltf.scene.position.z += 17;
+            gltf.scene.position.y += 0.5;
+            gltf.scene.position.x += 23;
+
+            gltf.scene.traverse(function(object){
+                object.name = "Villager"; 
+            });
+
+            villagerModel = gltf.scene;
+            modelReady = true;
+        }
+    );
 }
 
 function update(delta){
@@ -112,7 +121,7 @@ function update(delta){
     }
     
     spawnTimer -= delta;
-    if(spawnTimer <= 0){
+    if(spawnTimer <= 0 && modelReady){
         spawnTimer += spawnDelay;
         createVillager();
     }
