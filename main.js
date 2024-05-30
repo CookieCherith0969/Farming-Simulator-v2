@@ -1,8 +1,4 @@
 import * as THREE from 'three';
-import {OrbitControls} from './build/controls/OrbitControls.js';
-import {OBJLoader} from './build/loaders/OBJLoader.js';
-import {MTLLoader} from './build/loaders/MTLLoader.js';
-import {FBXLoader} from './build/loaders/FBXLoader.js';
 import {EffectComposer} from './build/postprocessing/EffectComposer.js';
 import {RenderPass} from './build/postprocessing/RenderPass.js';
 import {SSAOPass} from './build/postprocessing/SSAOPass.js';
@@ -20,9 +16,7 @@ import * as COOKING from './build/cooking.js';
 var scene = new THREE.Scene();
 var colliders = new THREE.Group();
 scene.add(colliders);
-var mtl_loader = new MTLLoader();
-var obj_loader = new OBJLoader();
-var fbx_loader = new FBXLoader();
+
 var gameOver = false;
 var gameOverText = getDoc().getElementById("gameOverText");
 
@@ -32,17 +26,8 @@ gameOverText.style.opacity = 0;
 var daysSurvived = 0;
 
 
-function getFBXLoader(){
-    return fbx_loader;
-}
 var prevTime = performance.now();
 
-function getMTLLoader(){
-    return mtl_loader;
-}
-function getOBJLoader(){
-    return obj_loader;
-}
 function getScene(){
     return scene;
 }
@@ -89,7 +74,7 @@ VILLAGER.setup();
 COOKING.setup();
 FARMING.setup();
 //adding lights
-var ambientLight  =new THREE.AmbientLight(0xffffff, 0.5);
+var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 //scene.add(ambientLight);
 
 var effectComposer = new EffectComposer(renderer);
@@ -153,4 +138,4 @@ function addDay(){
 
 requestAnimationFrame(UpdateLoop);
 
-export{getScene, getDoc, getWindow, getMTLLoader, getOBJLoader, getFBXLoader, getColliders, addCollider, removeCollider, isGameOver, endGame, addDay};
+export{getScene, getDoc, getWindow, getColliders, addCollider, removeCollider, isGameOver, endGame, addDay};

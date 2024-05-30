@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import {getScene, getMTLLoader, getOBJLoader, getFBXLoader, addCollider, isGameOver} from '../main.js';
+import {getScene, addCollider, isGameOver} from '../main.js';
 import { onDayEnd } from './inventory.js';
 import { GLTFLoader} from './loaders/GLTFLoader.js';
 
