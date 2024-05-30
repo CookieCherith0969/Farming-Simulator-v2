@@ -3,7 +3,7 @@ import {getDoc, getScene} from '../main.js';
 import {tryTrade} from './villager.js';
 import {addItem, deleteItem, printInventory, getCurrentItem,getItemAmount, removeCurrency} from './inventory.js';
 import { isSeed, cropToSeed, seedToCrop, addCrop, removeCrop, wetPlot, loadStage,isCrateActive,getCurrentCrate,setActiveCrate, tryWetCrop} from './farming.js';
-import { closeAnim, openAnim} from './cooking.js';
+import { closeAnim, cropToRecipe, openAnim} from './cooking.js';
 // Uses object name to select which interaction function to call
 function handleInteraction(object){
     console.log(object.name);
@@ -78,7 +78,7 @@ function cropInteraction(object){
 function plotInteraction(object){
     var info = object.userData;
     if(info.planted){
-        tryWetCrop(info.crop);
+        cropInteraction(info.crop);
         return;
     }
     var currentItem = getCurrentItem()
@@ -101,43 +101,13 @@ function ovenInteraction(object){
         return;
     }
     var currentItem = getCurrentItem()
-    switch(currentItem.name){
-        case 'Wheat':
-            if(currentItem.amount >= 3){
-                deleteItem(currentItem.name, 3);
-                object.userData.cookTime = 20.0;
-                object.userData.outputName = 'Bread';
-                object.userData.outputAmount = 1;
-                closeAnim(object);
-            }
-            break;
-        case 'Carrot':
-            if(currentItem.amount >= 6){
-                deleteItem(currentItem.name, 6);
-                object.userData.cookTime = 15.0;
-                object.userData.outputName = 'Carrot Cake';
-                object.userData.outputAmount = 1;
-                closeAnim(object);
-            }
-            break;
-        case 'Potato':
-            if(currentItem.amount >= 4){
-                deleteItem(currentItem.name, 4);
-                object.userData.cookTime = 10.0;
-                object.userData.outputName = 'Potato Wedges';
-                object.userData.outputAmount = 1;
-                closeAnim(object);
-            }
-            break;
-        case 'Corn':
-            if(currentItem.amount >= 3){
-                deleteItem(currentItem.name, 3);
-                object.userData.cookTime = 15.0;
-                object.userData.outputName = 'Cornflakes';
-                object.userData.outputAmount = 1;
-                closeAnim(object);
-            }
-            break;
+    var recipe = cropToRecipe(currentItem.name);
+    if(currentItem.amount >= recipe.cost){
+        deleteItem(currentItem.name, recipe.cost);
+        object.userData.cookTime = recipe.time;
+        object.userData.outputName = recipe.product;
+        object.userData.outputAmount = recipe.amount;
+        closeAnim(object);
     }
 }
 

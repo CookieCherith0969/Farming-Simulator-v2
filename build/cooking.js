@@ -7,6 +7,12 @@ var data = [
     {cookTime:0.0,outputName:'',outputAmount:0,ready:false,smokeTimer:0}, //Oven
     ]
 
+var crops = ["Wheat","Carrot","Potato","Corn"];
+var costs = [3, 6, 4, 3];
+var times = [20,15,10,15];
+var products = ["Bread","Carrot Cake","Potato Wedges","Cornflakes"];
+var amounts = [1,1,1,1];
+
 var stationToMixer = new Map();
 
 var activeStations = []
@@ -26,6 +32,11 @@ function setup(){
     ovenAt(new THREE.Vector3(22,0.5,21));
     //ovenAt(new THREE.Vector3(25,1,21));
     ovenAt(new THREE.Vector3(27,0.5,21));
+}
+
+function cropToRecipe(cropType){
+    var index = crops.indexOf(cropType);
+    return {cost:costs[index],time:times[index],product:products[index],amount:amounts[index]};
 }
 
 function ovenAt(pos){
@@ -170,4 +181,4 @@ function createSmoke(pos){
 }
 
 export {setup, update};
-export {closeAnim, openAnim};
+export {closeAnim, openAnim, cropToRecipe};
