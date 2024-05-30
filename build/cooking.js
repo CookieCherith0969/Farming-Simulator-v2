@@ -30,9 +30,9 @@ var worldRight = new THREE.Vector3(1,0,0);
 
 const loader = new GLTFLoader();
 function setup(){
-    ovenAt(new THREE.Vector3(22,0.5,21));
+    ovenAt(new THREE.Vector3(22,0.5,21), -Math.PI/2);
     //ovenAt(new THREE.Vector3(25,1,21));
-    ovenAt(new THREE.Vector3(27,0.5,21));
+    ovenAt(new THREE.Vector3(27,0.5,21), Math.PI/2);
 }
 
 function cropToRecipe(cropType){
@@ -40,7 +40,7 @@ function cropToRecipe(cropType){
     return {cost:costs[index],time:times[index],product:products[index],amount:amounts[index]};
 }
 
-function ovenAt(pos){
+function ovenAt(pos, yRot){
     loader.load(
         // resource URL
         'build/models/Oven.gltf',
@@ -70,12 +70,8 @@ function ovenAt(pos){
             });
             gltf.scene.userData = structuredClone(data[0]);
             gltf.scene.userData.animations = gltf.animations;
-            if(activeStations.length == 1){
-                gltf.scene.rotation.y = -Math.PI/2;
-            }
-            else if(activeStations.length == 2){
-                gltf.scene.rotation.y = Math.PI/2;
-            }
+            
+            gltf.scene.rotation.y = yRot;
         }
     );
 }
