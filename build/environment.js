@@ -106,12 +106,10 @@ function setup(){
         for(var x = 0; x<n; x++){
             if(z > center-halfWidth && z <= center+halfWidth && x >= center-halfDepth && x < center+halfDepth){
                 depth = 0
-                //console.log("Zero at: "+x+", "+z);
             }
             else{
                 var depth = Math.random()*heightVariation;
             }
-            //var depth = Math.random()*heightVariation;
 
             grounds[counter].position.z = z;
             grounds[counter].position.x = x;
@@ -122,46 +120,6 @@ function setup(){
             counter++;
         }
     }
-    /*var houseN = 5;
-    var houses = [];
-
-    for(var i = 0; i<houseN; i++){
-        getMTLLoader().setPath('build/models/')
-        getMTLLoader().load('house.mtl', function(materials){
-            materials.preload();
-            getOBJLoader().setMaterials(materials)
-            getOBJLoader().setPath('build/models/')
-            getOBJLoader().load('house.obj', function(object){
-                var texture = new THREE.TextureLoader().load('build/models/house.png');
-                object.traverse(function(child){
-                    if(child instanceof THREE.Mesh && child.material){
-                        child.material.map = texture;
-                    }
-                });
-                object.position.x = Math.floor(Math.random()*n);
-                object.position.y = -2;
-                object.position.z = Math.floor(Math.random()*n);
-                object.rotation.y = Math.floor(Math.random()*4)*Math.PI/2;
-                var box3 = new THREE.Box3();
-                box3.setFromObject(object);
-                var CenterBB = new THREE.Vector3();
-                var SizeBB = new THREE.Vector3();
-                box3.getCenter(CenterBB);
-                box3.getSize(SizeBB);
-                var boundHelper = new THREE.Box3Helper(box3, 0xffff00);
-                getScene().add(boundHelper);
-                getScene().add(object);
-                houses[i] = object;
-                console.log("Houses[i]: "+houses[i].position.x);
-            })
-        })
-    }
-    getFBXLoader().load('build/models/crops-low-poly/source/UnitedCrops/Crops/Crops.fbx', (object) => {
-        console.log(object);
-        object.position.y=1;
-        object.scale.multiplyScalar(0.01);
-        getScene().add(object);
-    });*/
     //adding a silly workplace
     var loader = new GLTFLoader();
     loader.load(
@@ -173,16 +131,8 @@ function setup(){
             gltf.scene.position.x +=n/2;
             gltf.scene.position.y +=0.5;
             addCollider(gltf.scene);
-            gltf.scene.traverse(function(object){
-                object.name = "Workspace";
-                object.userData.parent = gltf.scene;
-            });
-            //gltf.scene.userData = structuredClone(data[0]);
         }
     )
-
-    
-    
 
     sun = new THREE.SpotLight(sunColor, 0.8);
     sun.position.set(n/2, n+1, n/2);
@@ -199,28 +149,6 @@ function setup(){
     getScene().add(daylight);
     changeTime(0);
 
-    
-    function makeDirt(){
-        var x = Math.floor(Math.random()*(n-2));
-        var y = Math.floor(Math.random()*(n-2));
-        counter = y*n+x;
-        //var counter = Math.floor(Math.random() * ((n*n)-(cropSize*cropSize)-cropSize));
-        var dirtHeight = grounds[counter].position.y;
-        console.log(counter);
-        
-        for(var i = 0; i<cropSize; i++){
-            for(var j = 0; j < cropSize; j++){
-                grounds[counter].material.color = dirtColor;
-                grounds[counter].position.y = dirtHeight;
-                grounds[counter].name = "Plot";
-                grounds[counter].userData = {planted: false};
-                fields.push(grounds[counter]);
-                counter++;
-            }
-            counter +=(n-cropSize);
-        }
-    }
-
     function makeDirtAt(pos){
         counter = pos.y*n+pos.x;
         //var counter = Math.floor(Math.random() * ((n*n)-(cropSize*cropSize)-cropSize));
@@ -231,7 +159,7 @@ function setup(){
                 grounds[counter].material.color = dirtColor;
                 grounds[counter].position.y = dirtHeight;
                 grounds[counter].name = "Plot";
-                grounds[counter].userData = {planted: false};
+                grounds[counter].userData = {planted: false, crop: undefined};
                 fields.push(grounds[counter]);
                 counter++;
             }

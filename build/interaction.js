@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {getDoc, getScene} from '../main.js';
 import {tryTrade} from './villager.js';
 import {addItem, deleteItem, printInventory, getCurrentItem,getItemAmount, removeCurrency} from './inventory.js';
-import { isSeed, cropToSeed, seedToCrop, addCrop, removeCrop, wetPlot, loadStage,isCrateActive,getCurrentCrate,setActiveCrate} from './farming.js';
+import { isSeed, cropToSeed, seedToCrop, addCrop, removeCrop, wetPlot, loadStage,isCrateActive,getCurrentCrate,setActiveCrate, tryWetCrop} from './farming.js';
 import { closeAnim, openAnim} from './cooking.js';
 // Uses object name to select which interaction function to call
 function handleInteraction(object){
@@ -62,19 +62,7 @@ function grassInteraction(object){
 function cropInteraction(object){
     var info = object.userData;
     if(info.currentGrowth < info.growthTime){
-        if(info.waterTime <= 0){
-            var prevGrowth = info.currentGrowth;
-            info.currentGrowth += 10;
-            info.waterTime = 10;
-            wetPlot(info.plot);
-
-            if(info.currentGrowth >= info.growthTime){
-                loadStage(object, 3);
-            }
-            else if(info.currentGrowth >= info.growthTime/2 && prevGrowth < info.growthTime/2){
-                loadStage(object,2);
-            }
-        }
+        tryWetCrop(object)
         return;
     }
     var cropType = info.type;
@@ -85,12 +73,12 @@ function cropInteraction(object){
     addItem(cropType,cropAmount);
     addItem(cropToSeed(cropType),seedAmount);
     removeCrop(object);
-    console.log("removed");
 }
 
 function plotInteraction(object){
     var info = object.userData;
     if(info.planted){
+        tryWetCrop(info.crop);
         return;
     }
     var currentItem = getCurrentItem()

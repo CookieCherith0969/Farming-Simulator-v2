@@ -77,8 +77,8 @@ function addCrop(plot,cropType){
     activeCrops.push(newCrop);
     getScene().add(newCrop);
     loadStage(newCrop, 1);
+    plot.userData.crop = newCrop;
 }
-
 
 function removeCrop(crop){
     var index = activeCrops.indexOf(crop);
@@ -86,6 +86,23 @@ function removeCrop(crop){
     crop.userData.plot.userData.planted = false;
     dryPlot(crop.userData.plot);
     getScene().remove(crop);
+}
+
+function tryWetCrop(crop){
+    var info = crop.userData;
+    if(info.waterTime <= 0){
+        var prevGrowth = info.currentGrowth;
+        info.currentGrowth += 10;
+        info.waterTime = 10;
+        wetPlot(info.plot);
+
+        if(info.currentGrowth >= info.growthTime){
+            loadStage(crop, 3);
+        }
+        else if(info.currentGrowth >= info.growthTime/2 && prevGrowth < info.growthTime/2){
+            loadStage(crop,2);
+        }
+    }
 }
 
 function update(){
@@ -167,4 +184,4 @@ function seedCrateAt(pos, seed, cost){
     )
 }
 
-export {addCrop, removeCrop, cropToSeed, seedToCrop, isSeed, update, wetPlot, dryPlot, loadStage, setup, isCrateActive,getCurrentCrate,setActiveCrate};
+export {addCrop, removeCrop, cropToSeed, seedToCrop, isSeed, update, wetPlot, dryPlot, loadStage, setup, isCrateActive,getCurrentCrate,setActiveCrate, tryWetCrop};
