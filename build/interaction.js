@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import {getDoc, getScene} from '../main.js';
-import {changeText} from './villager.js';
+import {tryTrade} from './villager.js';
 import {addItem, deleteItem, printInventory, getCurrentItem,getItemAmount, removeCurrency} from './inventory.js';
 import { isSeed, cropToSeed, seedToCrop, addCrop, removeCrop, wetPlot, loadStage,isCrateActive,getCurrentCrate,setActiveCrate} from './farming.js';
 import { closeAnim, openAnim} from './cooking.js';
@@ -49,9 +49,7 @@ function crateInteraction(object){
 }
 
 function villagerInteraction(object){
-    var doc = getDoc();
-    var villtext = doc.getElementById("villagertext");
-    changeText(object);
+    tryTrade(object);
 }
 /*function dirtInteraction(object){
     object.material.color = new THREE.Color(0,0.8,0.15);
