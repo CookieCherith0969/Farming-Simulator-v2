@@ -1,0 +1,19 @@
+Todo:
+- rebalance all of the values for crops
+- add clock to show day progress
+- fix SSAO?
+- fix collisions?
+- inventory icons
+- move inventory to bottom
+- show more/all items
+- add day counter
+- Make it so clicking on a different villager instantly changes them to be the active trader
+- Make player spawn in the middle of the field, facing the trading stall
+
+Done:
+- clean up villager file
+- up value of carrot cake/shorten cook 
+- click on plot to water crop
+- only unload old model when new model is loaded
+- preload models
+- fix persistent smoke
