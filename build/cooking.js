@@ -23,6 +23,7 @@ var smokeLifetime = 2;
 var smokeBuoyancy = 0.5;
 var smokeVelocity = 0.5;
 var smokeSize = 0.5;
+var smokeDelay = 0.5;
 
 var worldUp = new THREE.Vector3(0,1,0);
 var worldRight = new THREE.Vector3(1,0,0);
@@ -126,9 +127,9 @@ function update(delta){
         }
         if(station.userData.ready){
             station.userData.smokeTimer+=delta;
-            while(station.userData.smokeTimer > 0.1){
+            while(station.userData.smokeTimer > smokeDelay){
                 createSmoke(station.position);
-                station.userData.smokeTimer -= 0.1;
+                station.userData.smokeTimer -= smokeDelay;
             }
         }
     }
