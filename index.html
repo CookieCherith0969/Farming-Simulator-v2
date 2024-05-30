@@ -1,0 +1,107 @@
+<html>
+    <head>
+        <title>Main</title>
+    </head>
+    <style>
+        body {margin: 0;}
+        canvas{width:100%; height: 100%}
+    </style>
+
+    <body>
+        <link rel ="shortcut icon" href="#">
+        <style>
+              #villagerText {
+            position: absolute;
+            top: 80%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: Arial;
+            opacity: 0;
+        }
+            body{
+                font-family: "Comic Sans MS";
+                background-color: #111;
+                color: #fff;
+                margin: 0px;
+                overflow: hidden;
+            }
+            #info {
+                position: absolute;
+                top: 10px;
+                width: 100%;
+                text-align:center;
+                color: #aaa;
+            }
+            #topInventoryText{
+                position: absolute;
+                text-align: left;
+                top: 75%;
+                left: 2%;
+                color: #aaa;
+            }
+            #midInventoryText{
+                position: absolute;
+                text-align: left;
+                top: 80%;
+                left: 5%;
+                color: #fff;
+            }
+            #bottomInventoryText{
+                position: absolute;
+                text-align: left;
+                top: 85%;
+                left: 8%;
+                color: #aaa;
+            }
+            #currencyText{
+                position: absolute;
+                text-align: right;
+                top: 80%;
+                right: 5%;
+                color: #fff;
+            }
+            #rentText{
+                position: absolute;
+                text-align: right;
+                top: 85%;
+                right: 2%;
+            }
+            #crateText{
+                position: absolute;
+                text-align: center;
+                top: 70%;
+                width: 100%;
+            }
+            #gameOverText{
+                position: absolute;
+                text-align: center;
+                width: 100%;
+                top: 30%;
+                color: #f00;
+            }
+        </style>
+        <div id = "info">
+            <p>Press CONTROL to enable controls</p>
+            <p>Press EXIT to disable controls</p>
+            <p>Press Q/E to change your selected item</p>
+            <p>Click again to confirm trades</p>
+        </div>
+        <h1 id="villagertext">placeholder</h1>
+        <h3 id="topInventoryText">empty</h3>
+        <h3 id="midInventoryText">Wheat Seeds</h3>
+        <h3 id="bottomInventoryText">empty</h3>
+        <h3 id="currencyText">$0</h3>
+        <h3 id="rentText">Next Rent: $10</h3>
+        <h2 id="crateText">[empty]</h2>
+        <h1 id="gameOverText">Game Over</h1>
+        
+        <script type = "importmap">
+            {
+                "imports": {
+                    "three": "./build/three.module.js"
+                }
+            }
+        </script>
+        <script type="module" src="/main.js"></script>
+    </body>
+</html>
