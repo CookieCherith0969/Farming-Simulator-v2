@@ -45,14 +45,15 @@ function isSeed(seedName){
 }
 
 function loadStage(crop, stage){
-    if(crop.children.length > 0){
-        crop.remove(crop.children[0]);
-    }
+    
     loader.load(
         //resource URL
         'build/models/'+crop.userData.type+stage+'.gltf',
         //called when the resource is loaded
         function(gltf){
+            if(crop.children.length > 0){
+                crop.remove(crop.children[0]);
+            }
             crop.add(gltf.scene);
             gltf.scene.traverse(function(object){
                 object.name = "Crop";
