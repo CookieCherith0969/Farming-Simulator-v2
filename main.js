@@ -81,8 +81,8 @@ var effectComposer = new EffectComposer(renderer);
 effectComposer.setSize(window.innerWidth, window.innerHeight);
 const renderPass = new RenderPass(scene, getCamera());
 effectComposer.addPass(renderPass);
-const ssaoPass = new SSAOPass(scene,getCamera(),window.innerWidth,window.innerHeight,64);
-effectComposer.addPass(ssaoPass);
+/*const ssaoPass = new SSAOPass(scene,getCamera(),window.innerWidth,window.innerHeight,64);
+effectComposer.addPass(ssaoPass);*/
 const outputPass = new OutputPass(scene,getCamera());
 effectComposer.addPass(outputPass);
 const crosshair = new ShaderPass(CrosshairShader);
