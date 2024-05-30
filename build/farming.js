@@ -26,6 +26,8 @@ var stats = [
 {type:"Corn",growthTime:40.0, currentGrowth: 0.0, minSeed:0,maxSeed:2,minCrop:1,maxCrop:3,waterTime:0.0}
 ]
 
+var models = new Map();
+
 var activeCrops = []
 
 var prevTime = performance.now();
@@ -45,22 +47,30 @@ function isSeed(seedName){
 }
 
 function loadStage(crop, stage){
-    
-    loader.load(
-        //resource URL
-        'build/models/'+crop.userData.type+stage+'.gltf',
-        //called when the resource is loaded
-        function(gltf){
-            if(crop.children.length > 0){
-                crop.remove(crop.children[0]);
-            }
-            crop.add(gltf.scene);
-            gltf.scene.traverse(function(object){
-                object.name = "Crop";
-                object.userData.parent = crop;     
-            });
-        }
-    )
+    console.log(models.get(crop.userData.type+stage));
+    var newModel = models.get(crop.userData.type+stage).clone(true);
+    if(crop.children.length > 0){
+        crop.remove(crop.children[0]);
+    }
+    crop.add(newModel);
+    newModel.traverse(function(object){
+        object.userData.parent = crop;     
+    });
+    // loader.load(
+    //     //resource URL
+    //     'build/models/'+crop.userData.type+stage+'.gltf',
+    //     //called when the resource is loaded
+    //     function(gltf){
+    //         if(crop.children.length > 0){
+    //             crop.remove(crop.children[0]);
+    //         }
+    //         crop.add(gltf.scene);
+    //         gltf.scene.traverse(function(object){
+    //             object.name = "Crop";
+    //             object.userData.parent = crop;     
+    //         });
+    //     }
+    // )
 }
 
 function addCrop(plot,cropType){
@@ -137,12 +147,33 @@ function update(){
     }
 }
 
+function loadModel(crop, stage){
+    loader.load(
+        //resource URL
+        'build/models/'+crop+stage+'.gltf',
+        //called when the resource is loaded
+        function(gltf){
+            console.log(crop+stage);
+            models.set(crop+stage,gltf.scene);
+            gltf.scene.traverse(function(object){
+                object.name = "Crop";   
+            });
+        }
+    )
+}
+
 function setup(){
     crateText.style.opacity = 0;
     seedCrateAt(new THREE.Vector3(23,0.5,34),'Wheat Seeds',3);
     seedCrateAt(new THREE.Vector3(24,0.5,34),'Corn Seeds',3);
     seedCrateAt(new THREE.Vector3(25,0.5,34),'Carrot',10);
     seedCrateAt(new THREE.Vector3(26,0.5,34),'Potato',10);
+
+    for(var crop of crops){
+        for(var i = 1; i <= 3; ++i ){
+            loadModel(crop,i);
+        }
+    }
 }
 
 function isCrateActive(){
